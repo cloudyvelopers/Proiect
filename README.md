@@ -8,11 +8,8 @@ Descriere
 - Aplicația trebuie să permită acordarea unui punctaj unui proiect de către un juriu anonim de colegi.
 - Platforma este bazată pe o aplicație web cu arhitectură de tip Single Page Application accesibilă în browser de pe desktop, dispozitive mobile sau tablete (considerând preferințele utilizatorului).
 
-Funcționalități (minime)
-- Ca student membru în echipa unui proiect (MP) pot să îmi adaug un proiect și să definesc o serie de livrabile partiale ale proiectului. La înscriere devin automat și parte din grupul de posibili evaluatori
-- Ca MP pentru un livrabil partial pot adăuga un video demonstrativ pentru proiect sau un link la un server unde poate fi accesat proiectul
-- La data unui livrabil parțial, ca student care nu este MP pot fi selectat aleatoriu să fac parte din juriul unui proiect. Pot acorda o notă proiectului doar dacă am fost selectat în juriul pentru el. 
-- Nota la un proiect este anonimă, iar nota totală se calculează omițând cea mai mare și cea mai mică notă. Notele sunt de la 1-10 cu până la 2 cifre fracționare.
-- Ca profesor, pot vedea evaluarea pentru fiecare proiect, fără a vedea însă identitatea membrilor juriului.
-- Aplicația are și un sistem de permisiuni. Doar un membru al juriului poate să adauge/modifice note și doar notele lui pe o perioadă limitată de timp
+------------------------------------------------------------------------------------
 
+# Introducere
+
+  Aplicația ce urmează a fi realizată permite acordarea de feedback (note de la 1 la 10) echipelor de studenți ce realizează proiecte, acest lucru fiind esențial pentru livrarea unui produs software util și eficient în același timp. Fiecare persoană ce face parte din juriu poate acorda o notă pentru design, funcționalitate, timp de răspuns al paginilor, ușurința în utilizare etc. (este vorba de un scurt formular: o listă de elemente ce se doresc a fi notate și nota efectivă pentru acel item). Astfel, la sfârșit, după ce sesiunea s-a încheiat (timpul a expirat), echipa poate vedea rezultatele, mai exact unde trebuie să aducă îmbunătățiri și unde trebuie să acorde mai multă atenție. Toate aceste rezultate vor putea fi vizualizate de către un profesor, astfel urmărind evoluția echipei (unde au reușit să aducă modificări, dacă aceste modificări au dus la creșterea/scăderea notei pentru un anumit item etc.).
