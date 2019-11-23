@@ -1,10 +1,10 @@
 # Proiect
 Aplicație web - acordare anonimă de note
 
-Obiectiv
+*Obiectiv*
 - Realizarea unei aplicații web care să permită acordarea de punctaje anonime de către un juriu anonim de studenți proiectului altor studenți.
 
-Descriere
+*Descriere*
 - Aplicația trebuie să permită acordarea unui punctaj unui proiect de către un juriu anonim de colegi.
 - Platforma este bazată pe o aplicație web cu arhitectură de tip Single Page Application accesibilă în browser de pe desktop, dispozitive mobile sau tablete (considerând preferințele utilizatorului).
 
