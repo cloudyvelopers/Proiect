@@ -20,3 +20,6 @@ Aplicație web - acordare anonimă de note
 ### Aplicații similare
 - La momentul actual, aplicațiile care permit acordarea de note în mod anonim sunt folosite strict în cadrul universităților/școlilor, ca de exemplu _The Univeristy Of Queensland din Australia_ ce nu permite sesiuni de acordare anonimă de note sau feedback decât studenților afiliați acesteia.
 - Însă, printre singurele platforme free și online care facilitează atât studenților, cât și profesorilor sesiunile de acordare anonimă de note și feedback sunt Peergrade și Eduflow. Spre exemplu, Peergrade este o platforma cu un design atractiv și funcționează pe principiul că mai întâi profesorul își creează o temă, o secțiune de feedback și note. Studenții își trimit documentele în tema deja creată și încep să își acorde note + feedback; fiecare va primi rezultatele într-o secțiune specială. De asemenea, profesorul are o imagine de ansamblu a tuturor notelor și aprecierilor.
+
+## Single Page App - Canvas
+![Canvas](https://raw.githubusercontent.com/cloudyvelopers/Proiect/master/img_doc/canvas.png)
