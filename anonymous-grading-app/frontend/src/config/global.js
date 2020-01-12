@@ -1,0 +1,1 @@
+export const SERVER='http://18.191.247.69:3000'
