@@ -23,9 +23,25 @@ sequelize.authenticate()
 
 
 //definirea tebelelor
+const Teacher = sequelize.define('teacher', {
+	email : Sequelize.STRING,
+	password : Sequelize.TEXT
+}, {
+	underscored : true //modificarea conditiei pentru id
+})
+
+
+const Student = sequelize.define('student', {
+	email : Sequelize.STRING,
+	password : Sequelize.TEXT
+}, {
+	underscored : true //modificarea conditiei pentru id
+})
+
 const Project = sequelize.define('project', {
 	title : Sequelize.STRING,
-	file : Sequelize.TEXT
+	file : Sequelize.TEXT,
+	grade: Sequelize.FLOAT
 }, {
 	underscored : true //modificarea conditiei pentru id
 })
@@ -35,7 +51,10 @@ const File = sequelize.define('file', {
 	type : Sequelize.TEXT
 })
 
+//legaturi intre tabele
 Project.hasMany(File)
+Student.hasMany(Project)
+Teacher.hasMany(Student)
 
 sequelize.sync()
 	.then(() => console.log('created'))
@@ -56,7 +75,7 @@ app.get('/create', async (req, res) => {
 		res.status(500).json({message : 'server error'})
 	}
 })
-
+////////////////////////////
 app.get('/projects', async (req, res) => {
 	try{
 		let projects = await Project.findAll()
@@ -68,6 +87,31 @@ app.get('/projects', async (req, res) => {
 	}
 })
 
+///////////////////////////
+app.get('/students', async (req, res) => {
+	try{
+		let students = await Student.findAll()
+		res.status(200).json(students)
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+
+
+///////////////////////////
+app.get('/proffesors', async (req, res) => {
+	try{
+		let teachers = await Teacher.findAll()
+		res.status(200).json(teachers)
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+/////////////////////////////////
 
 app.post('/projects', async (req, res) => {
 	try{
@@ -85,7 +129,43 @@ app.post('/projects', async (req, res) => {
 		res.status(500).json({message : 'server error'})
 	}
 })
+////////////////////////////////////////////////
+app.post('/students', async (req, res) => {
+	try{
+		if (req.query.bulk && req.query.bulk == 'on'){
+			await Student.bulkCreate(req.body)
+			res.status(201).json({message : 'created'})
+		}
+		else{
+			await Student.create(req.body)
+			res.status(201).json({message : 'created'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
 
+////////////////////////////////////////////////
+app.post('/teachers', async (req, res) => {
+	try{
+		if (req.query.bulk && req.query.bulk == 'on'){
+			await Teacher.bulkCreate(req.body)
+			res.status(201).json({message : 'created'})
+		}
+		else{
+			await Teacher.create(req.body)
+			res.status(201).json({message : 'created'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+
+/////////////////////////////////////////////////
 app.get('/projects/:id', async (req, res) => {
 	try{
 		let project = await Project.findById(req.params.id)
@@ -101,7 +181,42 @@ app.get('/projects/:id', async (req, res) => {
 		res.status(500).json({message : 'server error'})
 	}
 })
+///////////////////////////////////////////
+app.get('/students/:id', async (req, res) => {
+	try{
+		let student = await Project.findById(req.params.id)
+		if (student){
+			res.status(200).json(student)
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+///////////////////////////////////////////
+app.get('/teachers/:id', async (req, res) => {
+	try{
+		let teacher = await Teacher.findById(req.params.id)
+		if (teacher){
+			res.status(200).json(teacher)
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
 
+
+
+/////////////////////////////////////////
 app.put('/projects/:id', async (req, res) => {
 	try{
 		let project = await Project.findById(req.params.id)
@@ -118,6 +233,44 @@ app.put('/projects/:id', async (req, res) => {
 		res.status(500).json({message : 'server error'})
 	}
 })
+/////////////////////////////
+app.put('/students/:id', async (req, res) => {
+	try{
+		let student = await Student.findById(req.params.id)
+		if (student){
+			await student.update(req.body)
+			res.status(202).json({message : 'accepted'})
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+
+
+
+/////////////////////////////
+app.put('/proffesors/:id', async (req, res) => {
+	try{
+		let teacher = await Teacher.findById(req.params.id)
+		if (teacher){
+			await teacher.update(req.body)
+			res.status(202).json({message : 'accepted'})
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+///////////////////////////////////
 
 app.delete('/projects/:id', async (req, res) => {
 	try{
@@ -136,6 +289,45 @@ app.delete('/projects/:id', async (req, res) => {
 	}
 })
 
+
+/////////////////////////////////////////
+app.delete('/students/:id', async (req, res) => {
+	try{
+		let student = await Student.findById(req.params.id)
+		if (student){
+			await student.destroy()
+			res.status(202).json({message : 'accepted'})
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+
+/////////////////////////////////////////
+app.delete('/proffesors/:id', async (req, res) => {
+	try{
+		let teacher = await Project.findById(req.params.id)
+		if (teacher){
+			await teacher.destroy()
+			res.status(202).json({message : 'accepted'})
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+
+///////////////////////////////////////
+
 app.get('/projects/:pid/files', async (req, res) => {
 	try{
 		let project = await Project.findById(req.params.pid)
@@ -153,6 +345,44 @@ app.get('/projects/:pid/files', async (req, res) => {
 	}
 })
 
+
+///////////////////////////////
+app.get('/students/:sid/projects', async (req, res) => {
+	try{
+		let student = await Student.findById(req.params.sid)
+		if (student){
+			let projects = await student.getProjects()
+			res.status(200).json(projects)
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+
+
+///////////////////////////////
+app.get('/proffesors/:prid/students', async (req, res) => {
+	try{
+		let teacher = await Teacher.findById(req.params.prid)
+		if (teacher){
+			let students = await teacher.getStudents()
+			res.status(200).json(students)
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+////////////////////////////////
 app.get('/projects/:pid/files/:fid', async (req, res) => {
 	try{
 		let project = await Project.findById(req.params.pid)
@@ -170,6 +400,43 @@ app.get('/projects/:pid/files/:fid', async (req, res) => {
 	}
 })
 
+/////////////////////////////////
+app.get('/students/:sid/projects/:pid', async (req, res) => {
+	try{
+		let student = await Student.findById(req.params.pid)
+		if (student){
+			let projects = await student.getProjects({where : {id : req.params.pid}})
+			res.status(200).json(files.shift())
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+
+/////////////////////////////////
+app.get('/teachers/:prid/students/:sid', async (req, res) => {
+	try{
+		let teacher = await Teacher.findById(req.params.prid)
+		if (teacher){
+			let students = await teacher.getStudents({where : {id : req.params.sid}})
+			res.status(200).json(files.shift())
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+
+/////////////////
 app.post('/projects/:pid/files', async (req, res) => {
 	try{
 		let project = await Project.findById(req.params.pid)
@@ -188,6 +455,46 @@ app.post('/projects/:pid/files', async (req, res) => {
 		res.status(500).json({message : 'server error'})
 	}
 })
+/////////////////////
+app.post('/students/:sid/projects', async (req, res) => {
+	try{
+		let student = await Student.findById(req.params.sid)
+		if (student){
+			let project = req.body
+			project.student_id = student.id
+			await Project.create(project)
+			res.status(201).json({message : 'created'})
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+/////////////////////
+app.post('/teachers/:prid/students', async (req, res) => {
+	try{
+		let teacher = await Teacher.findById(req.params.prid)
+		if (teacher){
+			let student = req.body
+			student.teacher_id = teacher.id
+			await Student.create(student)
+			res.status(201).json({message : 'created'})
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+///////////////////////////////////
+
 
 app.put('/projects/:pid/files/:fid', async (req, res) => {
 	try{
@@ -213,6 +520,60 @@ app.put('/projects/:pid/files/:fid', async (req, res) => {
 	}
 })
 
+
+///////////////////////////
+app.put('/students/:sid/projects/:pid', async (req, res) => {
+	try{
+		let student = await Student.findById(req.params.sid)
+		if (student){
+			let projects = await student.getProjects({where : {id : req.params.pid}})
+			let project = projects.shift()
+			if (project){
+				await project.update(req.body)
+				res.status(202).json({message : 'accepted'})
+			}
+			else{
+				res.status(404).json({message : 'not found'})
+			}
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+
+
+///////////////////////////
+app.put('/teachers/:prid/students/:sid', async (req, res) => {
+	try{
+		let teacher = await Teacher.findById(req.params.prid)
+		if (teacher){
+			let students = await teacher.getStudents({where : {id : req.params.sid}})
+			let student = students.shift()
+			if (student){
+				await student.update(req.body)
+				res.status(202).json({message : 'accepted'})
+			}
+			else{
+				res.status(404).json({message : 'not found'})
+			}
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+
+///////////////////////////////////////////////
+
 app.delete('/projects/:pid/files/:fid', async (req, res) => {
 	try{
 		let project = await Project.findById(req.params.pid)
@@ -221,6 +582,54 @@ app.delete('/projects/:pid/files/:fid', async (req, res) => {
 			let file = files.shift()
 			if (file){
 				await file.destroy(req.body)
+				res.status(202).json({message : 'accepted'})
+			}
+			else{
+				res.status(404).json({message : 'not found'})
+			}
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+/////////////////////////////////////////////
+app.delete('/students/:sid/projects/:pid', async (req, res) => {
+	try{
+		let student = await Student.findById(req.params.sid)
+		if (student){
+			let projects = await student.getProjects({where : {id : req.params.pid}})
+			let project = projects.shift()
+			if (project){
+				await project.destroy(req.body)
+				res.status(202).json({message : 'accepted'})
+			}
+			else{
+				res.status(404).json({message : 'not found'})
+			}
+		}
+		else{
+			res.status(404).json({message : 'not found'})
+		}
+	}
+	catch(e){
+		console.warn(e)
+		res.status(500).json({message : 'server error'})
+	}
+})
+/////////////////////////////////////////////
+app.delete('/teachers/:prid/students/:sid', async (req, res) => {
+	try{
+		let teacher = await Teacher.findById(req.params.prid)
+		if (teacher){
+			let students = await teacher.getStudents({where : {id : req.params.sid}})
+			let student = students.shift()
+			if (student){
+				await student.destroy(req.body)
 				res.status(202).json({message : 'accepted'})
 			}
 			else{

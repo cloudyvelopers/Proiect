@@ -132,7 +132,7 @@ class ProjectEditor extends Component{
             </DataTable>
             {
                 this.state.isAddDialogShown ?
-                <Dialog visible={this.state.isAddDialogShown} header="Add a project" onHide={this.hideAddDialog} footer={this.addDialogFooter} >
+                <Dialog visible={this.state.isAddDialogShown} header="Adaugati un proiect" onHide={this.hideAddDialog} footer={this.addDialogFooter} >
                      <InputText onChange={(e) => this.updateProperty('title', e.target.value)} value={this.state.project.title} name="title" placeholder="title" />
                     <InputText onChange={(e) => this.updateProperty('file', e.target.value)} value={this.state.project.file} name="file" placeholder="file" />
                 </Dialog> 

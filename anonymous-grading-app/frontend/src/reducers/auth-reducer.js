@@ -2,7 +2,7 @@ import {
   AUTH_SIGN_UP, 
   AUTH_SIGN_OUT, 
   AUTH_SIGN_IN, 
-  AUTH_ERROR } from '../actions/types';
+  AUTH_ERROR } from '../actions/auth-actions';
 
 const DEFAULT_STATE = {
   isAuthenticated: false,

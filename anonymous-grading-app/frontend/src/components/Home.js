@@ -3,7 +3,7 @@ import React from 'react';
 export default () =>{
     return (
         <div>
-            Welcome to our home page!
+            <p>Welcome to our home page!</p>
         </div>
         );
 };
